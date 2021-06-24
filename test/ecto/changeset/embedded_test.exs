@@ -112,6 +112,17 @@ defmodule Ecto.Changeset.EmbeddedTest do
     assert profile.valid?
     assert changeset.valid?
   end
+  
+  test "cast embeds_one with valid params and a default value for embedded" do
+    changeset = cast(%Author{profile: %Profile{}}, %{"profile" => %{"name" => "michal"}}, :profile)
+
+    profile = changeset.changes.profile
+    assert profile.changes == %{name: "michal"}
+    assert profile.errors == []
+    assert profile.action == :insert
+    assert profile.valid?
+    assert changeset.valid?
+  end
 
   test "cast embeds_one with invalid params" do
     changeset = cast(%Author{}, %{"profile" => %{}}, :profile)
